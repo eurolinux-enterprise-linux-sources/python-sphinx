@@ -9,7 +9,7 @@
 
 Name:       python-sphinx
 Version:    1.1.3
-Release:    8%{?dist}
+Release:    9%{?dist}
 Summary:    Python documentation generator
 
 Group:      Development/Tools
@@ -27,6 +27,8 @@ Patch0: sphinx-docutils-0.10.patch
 # Fixes quoting issue in inheritance_diagram.py
 # Already applied upstream as part of https://bitbucket.org/birkenfeld/sphinx/commits/fc1db93d21a5a535d9d62e5a0c9f0a806a8c117a
 Patch1: Sphinx-1.1.3-fix_quoting_in_inheritance.patch
+
+Patch2: fix-container-directive-handling.patch
 
 BuildArch:     noarch
 BuildRequires: python2-devel >= 2.4
@@ -141,6 +143,7 @@ sed '1d' -i sphinx/pycode/pgen2/token.py
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -261,6 +264,14 @@ popd
 
 
 %changelog
+* Wed Aug 12 2015 Scientific Linux Auto Patch Process <SCIENTIFIC-LINUX-DEVEL@LISTSERV.FNAL.GOV>
+- Eliminated rpmbuild "bogus date" error due to inconsistent weekday,
+  by assuming the date is correct and changing the weekday.
+
+* Mon Jun 22 2015 Matej Stuchlik <mstuchli@redhat.com> - 1.1.3-9
+- Fix "container" directive handling in the text builder
+Resolves: rhbz#1065137
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.1.3-8
 - Mass rebuild 2013-12-27
 
