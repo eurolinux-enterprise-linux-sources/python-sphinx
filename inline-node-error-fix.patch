@@ -1,0 +1,30 @@
+From 2beffe94252738fb8eeb1483d2d9d0b67e0aadca Mon Sep 17 00:00:00 2001
+From: Charalampos Stratakis <cstratak@redhat.com>
+Date: Wed, 30 Mar 2016 13:58:01 +0200
+Subject: [PATCH] Inline node error fix
+
+---
+ sphinx/writers/manpage.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/sphinx/writers/manpage.py b/sphinx/writers/manpage.py
+index e074691..0b6ac99 100644
+--- a/sphinx/writers/manpage.py
++++ b/sphinx/writers/manpage.py
+@@ -340,5 +340,13 @@ class ManualPageTranslator(BaseTranslator):
+             self.body.append(node.astext())
+         raise nodes.SkipNode
+ 
++    def visit_meta(self, node):
++        raise nodes.SkipNode
++
++    def visit_inline(self, node):
++        pass
++    def depart_inline(self, node):
++        pass
++
+     def unknown_visit(self, node):
+         raise NotImplementedError('Unknown node: ' + node.__class__.__name__)
+-- 
+2.5.5
+

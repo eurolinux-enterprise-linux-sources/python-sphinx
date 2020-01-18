@@ -1,0 +1,41 @@
+From a770288c3b2f5688e8769ed7ba206f545bbba9c5 Mon Sep 17 00:00:00 2001
+From: Robert Kuska <rkuska@redhat.com>
+Date: Thu, 10 Mar 2016 09:16:50 +0100
+Subject: [PATCH] Enable rebuilding docs in FIPS mode
+
+---
+ sphinx/builders/html.py           | 4 ++--
+ sphinx/ext/inheritance_diagram.py | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/sphinx/builders/html.py b/sphinx/builders/html.py
+index 8184037..0b53160 100644
+--- a/sphinx/builders/html.py
++++ b/sphinx/builders/html.py
+@@ -156,8 +156,8 @@ class StandaloneHTMLBuilder(Builder):
+         cfgdict = dict((name, self.config[name])
+                        for (name, desc) in self.config.values.iteritems()
+                        if desc[1] == 'html')
+-        self.config_hash = md5(unicode(cfgdict).encode('utf-8')).hexdigest()
+-        self.tags_hash = md5(unicode(sorted(self.tags)).encode('utf-8')) \
++        self.config_hash = md5(unicode(cfgdict).encode('utf-8'), usedforsecurity=False).hexdigest()
++        self.tags_hash = md5(unicode(sorted(self.tags)).encode('utf-8'), usedforsecurity=False) \
+                 .hexdigest()
+         old_config_hash = old_tags_hash = ''
+         try:
+diff --git a/sphinx/ext/inheritance_diagram.py b/sphinx/ext/inheritance_diagram.py
+index baaac28..41b2355 100644
+--- a/sphinx/ext/inheritance_diagram.py
++++ b/sphinx/ext/inheritance_diagram.py
+@@ -314,7 +314,7 @@ class InheritanceDiagram(Directive):
+ 
+ 
+ def get_graph_hash(node):
+-    return md5(node['content'] + str(node['parts'])).hexdigest()[-10:]
++    return md5(node['content'] + str(node['parts']), usedforsecurity=False).hexdigest()[-10:]
+ 
+ 
+ def html_visit_inheritance_diagram(self, node):
+-- 
+2.5.0
+

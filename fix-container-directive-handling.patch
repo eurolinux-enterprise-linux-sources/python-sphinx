@@ -1,0 +1,22 @@
+# HG changeset patch
+# User Georg Brandl <georg@python.org>
+# Date 1351447311 -3600
+# Node ID 447fab1105ec52ef017c8749be404e7b268b0395
+# Parent  cfee81fc93bba3cab34691968003aa795373ad50
+Closes #1018: Fix "container" directive handling in the text builder.
+
+diff --git a/sphinx/writers/text.py b/sphinx/writers/text.py
+--- a/sphinx/writers/text.py
++++ b/sphinx/writers/text.py
+@@ -714,6 +714,11 @@
+     def depart_inline(self, node):
+         pass
+ 
++    def visit_container(self, node):
++        pass
++    def depart_container(self, node):
++        pass
++
+     def visit_problematic(self, node):
+         self.add_text('>>')
+     def depart_problematic(self, node):
