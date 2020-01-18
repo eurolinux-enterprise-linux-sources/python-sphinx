@@ -9,7 +9,7 @@
 
 Name:       python-sphinx
 Version:    1.1.3
-Release:    11%{?dist}
+Release:    7%{?dist}
 Summary:    Python documentation generator
 
 Group:      Development/Tools
@@ -21,26 +21,12 @@ Group:      Development/Tools
 License:    BSD and Public Domain and Python and (MIT or GPLv2)
 URL:        http://sphinx.pocoo.org/
 Source0:    http://pypi.python.org/packages/source/S/%{upstream_name}/%{upstream_name}-%{version}.tar.gz
-
 # Sent upstream as a fix to work with the next version of docutils
 # https://bitbucket.org/birkenfeld/sphinx/issue/998/docutils-010-will-break-sphinx-manpage
 Patch0: sphinx-docutils-0.10.patch
-
 # Fixes quoting issue in inheritance_diagram.py
 # Already applied upstream as part of https://bitbucket.org/birkenfeld/sphinx/commits/fc1db93d21a5a535d9d62e5a0c9f0a806a8c117a
 Patch1: Sphinx-1.1.3-fix_quoting_in_inheritance.patch
-
-Patch2: fix-container-directive-handling.patch
-
-# Enables rebuilding of docs when RHEL is set to FIPS mode.
-# https://bugzilla.redhat.com/show_bug.cgi?id=966954
-Patch3: enable-rebuilding-docs-in-FIPS-mode.patch
-
-# Add missing "meta" and "inline" node visitors for the manpage writer
-# which fixes some exception errors when building docs.
-# https://github.com/sphinx-doc/sphinx/commit/0ef7a0a7a36b0c653e535bca77c08027f1a720a8
-# https://bugzilla.redhat.com/show_bug.cgi?id=1291573
-Patch4: inline-node-error-fix.patch
 
 BuildArch:     noarch
 BuildRequires: python2-devel >= 2.4
@@ -155,9 +141,6 @@ sed '1d' -i sphinx/pycode/pgen2/token.py
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -278,21 +261,6 @@ popd
 
 
 %changelog
-* Wed Mar 30 2016 Charalampos Stratakis <cstratak@redhat.com> - 1.1.3-11
-- Added patch to fix inline node exception error when building docs
-Resolves: rhbz#1291573
-
-* Thu Mar 10 2016 Tomas Orsava <torsava@redhat.com> - 1.1.3-10
-- Added patch to enable rebuilding docs in FIPS mode
-Resolves: rhbz#966954
-
-* Mon Jun 22 2015 Matej Stuchlik <mstuchli@redhat.com> - 1.1.3-9
-- Fix "container" directive handling in the text builder
-Resolves: rhbz#1065137
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.1.3-8
-- Mass rebuild 2013-12-27
-
 * Sat Mar  9 2013 Michel Salim <salimma@fedoraproject.org> - 1.1.3-7
 - Fix inheritance_diagram quoting bug, exposed by the newer, stricter dot
 
